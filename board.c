@@ -7,16 +7,16 @@
 #include "board.h"
 
 
-void deselectAll(board_t* board) {
+void deselectAll(board_t board) {
 	for (int i = 0; i < filenum; i++)
-		for (int j = 0; j < filenum; j++)
-			board[i][j]->selected = false;
+		for (int j = 0; j < ranknum; j++)
+			board[i][j].selected = false;
 }
 
-void detargetAll(board_t* board) {
+void detargetAll(board_t board) {
 	for (int i = 0; i < filenum; i++)
-		for (int j = 0; j < filenum; j++)
-			board[i][j]->target = false;
+		for (int j = 0; j < ranknum; j++)
+			board[i][j].target = false;
 }
 
 void calculateTargets() {

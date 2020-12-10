@@ -7,11 +7,11 @@
 #include <stdbool.h>
 #include <SDL.h>
 
-const unsigned int windowWidht  = 1280;
-const unsigned int windowHeight = 720;
-const unsigned int squareSize   = 90;
-const unsigned int pieceWidht   = 285;
-const unsigned int pieceHeight  = 340;
+#define windowWidht  1280
+#define windowHeight 720
+#define squareSize   90
+#define pieceWidht   285
+#define pieceHeight  340
 
 
 #define filenum 8
@@ -49,13 +49,12 @@ struct Square {
 };
 
 
-//order:                        [file][rank]
+//order: [file][rank]
 typedef struct Square board_t[filenum][ranknum];
 
 
-void deselectAll(board_t* board);
-
-void detargetAll(board_t* board);
+void deselectAll(board_t board);
+void detargetAll(board_t board);
 
 void calculateTargets();
 
