@@ -1,6 +1,6 @@
 #pragma once
 #include <stdbool.h>
-#include <SDL.h>
+#include<SDL.h>
 
 extern int windowWidht;
 extern int windowHeight;
