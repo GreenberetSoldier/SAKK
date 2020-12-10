@@ -1,55 +1,63 @@
 #pragma once
+
+#ifndef BOARD_H
+#define BOARD_H
+
+
 #include <stdbool.h>
-#include<SDL.h>
+#include <SDL.h>
 
-extern int windowWidht;
-extern int windowHeight;
-extern int squareSize;
-extern int pieceWidht;
-extern int pieceHeight;
+const unsigned int windowWidht  = 1280;
+const unsigned int windowHeight = 720;
+const unsigned int squareSize   = 90;
+const unsigned int pieceWidht   = 285;
+const unsigned int pieceHeight  = 340;
 
-typedef enum PieceType {
+
+#define filenum 8
+#define ranknum 8
+
+enum PieceType {
 	WRookA, WKinghtA, WBishopW, WQueen, WKing, WBishopB, WKnightB, WRookH, WPawnA, WPawnB, WPawnC, WPawnD, WPawnE, WPawnF, WPawnG, WPawnH,
-	BRookA, BKinghtA, BBishopW, BQueen, BKing, BBishopB, BKnightB, BRookH, BPawnA, BPawnB, BPawnC, BPawnD, BPawnE, BPawnF, BPawnG, BPawnH,
-	empty = -1
-} PieceType;
+	BRookA, BKinghtA, BBishopW, BQueen, BKing, BBishopB, BKnightB, BRookH, BPawnA, BPawnB, BPawnC, BPawnD, BPawnE, BPawnF, BPawnG, BPawnH
+};
 
 typedef struct Piece {
-	PieceType type;
-	int rank, file;
+	enum PieceType type;
+	unsigned char file;
+	unsigned char rank;
 	bool movedYet;
+	bool taken;
 } Piece;
 
-typedef enum Fullness {
+/*typedef enum Fullness {
 	full, clear
-} Fullness;
+} Fullness;*/
 
 typedef struct Color {
 	int r, g, b, a;
 } Color;
 
-typedef struct Square {
-	Piece pieceOnSquare;
-	Color color;
-	Fullness fullness;
-	int rank, file;
-	int x1, x2, y1, y2;
-} Square;
+struct Square {
+	Piece* pieceOnSquare;
+	//Color color;
+	//Fullness fullness;
+	//int rank, file;
+	//int x1, x2, y1, y2;
+	bool selected;
+	bool target;
+};
 
-void slideSquare(Square* square);
 
-void slideSquareColumn(Square* square);
+//order:                        [file][rank]
+typedef struct Square board_t[filenum][ranknum];
 
-void squareChangeColour(Square* square);
 
-void squareResetX(Square* square);
+void deselectAll(board_t* board);
 
-void drawSqaure(Square* square, SDL_Renderer* renderer);
+void detargetAll(board_t* board);
 
-void drawFile(Square* square, SDL_Renderer* renderer);
+void calculateTargets();
 
-void resetSquare(Square* square);
 
-void drawBoard(Square* square, SDL_Renderer* renderer);
-
-void initializeBoardValues(Square*** board);
+#endif // BOARD_H
