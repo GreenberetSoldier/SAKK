@@ -36,11 +36,11 @@ int canBPawnTake(Square*** board, Piece* pawn) {
 		return -1;
 }
 
-void takePiece(Square* board[8][8], Piece* piece) {
+void takePiece(Square*** board, Piece* piece) {
 	board[piece->rank][piece->file]->pieceOnSquare = *piece;
 }
 
-void pawnTakesLeft(Square* board[8][8], Piece* pawn) {
+void pawnTakesLeft(Square*** board, Piece* pawn) {
 	takePiece(board, &board[pawn->rank - 1][pawn->file + 1]->pieceOnSquare);
 	board[pawn->rank][pawn->file]->pieceOnSquare.type = empty;
 	board[pawn->rank - 1][pawn->file + 1]->pieceOnSquare.type = pawn->type;
@@ -57,9 +57,9 @@ void pawnTakesRight(Square* board[8][8], Piece* pawn) {
 		}
 	}*/
 
-	takePiece(board, &board[pawn->rank + 1][pawn->file + 1]->pieceOnSquare);
+	takePiece(board, &board[pawn->rank][pawn->file]->pieceOnSquare);
 	board[pawn->rank][pawn->file]->pieceOnSquare.type = empty;
-	board[pawn->rank + 1][pawn->file + 1]->pieceOnSquare.type = pawn->type;
+	board[pawn->rank][pawn->file]->pieceOnSquare.type = pawn->type;
 	pawn->rank++;
 	pawn->file++;
 }

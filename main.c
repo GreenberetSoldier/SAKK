@@ -75,9 +75,9 @@ int main(int argc, char* argv[]) {
 	//TestMethod(board);
 
 	Piece WPawna = { WPawnA, 0, 1, false };
-	Piece BPawna = { BPawnA, 1, 4, false };
+	Piece BPawna = { BPawnA, 0, 4, false };
 	board[WPawna.rank][WPawna.file].pieceOnSquare = WPawna;
-	board[BPawna.rank][BPawna.file].pieceOnSquare.type = BPawnA;
+	board[BPawna.rank][BPawna.file].pieceOnSquare = BPawna;
 
 	SDL_Event event;
 	bool quit = false;
@@ -94,14 +94,16 @@ int main(int argc, char* argv[]) {
 			if (event.button.button == SDL_BUTTON_LEFT) {
 				if (!WPawna.movedYet) {
 					movePawnForwards2(&board, &WPawna);
+					movePawnForwards2(&board, &BPawna);
 					break;
 				}
 					movePawnForwards(&board, &WPawna);
+					movePawnForwards(&board, &BPawna);
 					printf("%d \n", board[WPawna.rank + 1][WPawna.file + 1].pieceOnSquare.type);
 					SDL_RenderPresent(renderer);
 					break;
 				}
-				else if (event.button.button == SDL_BUTTON_RIGHT) {
+			else if (event.button.button == SDL_BUTTON_RIGHT) {
 					//if (canWPawnTake(&board, &WPawna) == 0) {
 					//	TestMethod(&board);
 						pawnTakesRight(board, &WPawna);
