@@ -17,10 +17,21 @@
 #define filenum 8
 #define ranknum 8
 
+#define maxFile 7
+#define minFile 0
+#define maxRank 7
+#define minRank 0
+
 enum PieceType {
-	WRookA, WKinghtA, WBishopW, WQueen, WKing, WBishopB, WKnightB, WRookH, WPawnA, WPawnB, WPawnC, WPawnD, WPawnE, WPawnF, WPawnG, WPawnH,
-	BRookA, BKinghtA, BBishopW, BQueen, BKing, BBishopB, BKnightB, BRookH, BPawnA, BPawnB, BPawnC, BPawnD, BPawnE, BPawnF, BPawnG, BPawnH
+	BRookA, BKinghtA, BBishopA, BQueen,  BKing, BBishopB, BKnightB, BRookB,
+	BPawnA,   BPawnB,   BPawnC, BPawnD, BPawnE,   BPawnF,   BPawnG, BPawnH,
+
+	WPawnA,   WPawnB,   WPawnC, WPawnD, WPawnE,   WPawnF,   WPawnG, WPawnH,
+	WRookA, WKinghtA, WBishopA, WQueen,  WKing, WBishopB, WKnightB, WRookB
 };
+
+extern char maxBlack;
+extern char minWhite;
 
 typedef struct Piece {
 	enum PieceType type;
@@ -30,21 +41,12 @@ typedef struct Piece {
 	bool taken;
 } Piece;
 
-/*typedef enum Fullness {
-	full, clear
-} Fullness;*/
-
 typedef struct Color {
 	int r, g, b, a;
 } Color;
 
 struct Square {
 	Piece* pieceOnSquare;
-	//Color color;
-	//Fullness fullness;
-	//int rank, file;
-	//int x1, x2, y1, y2;
-	bool selected;
 	bool target;
 };
 
@@ -52,11 +54,15 @@ struct Square {
 //order: [file][rank]
 typedef struct Square board_t[filenum][ranknum];
 
-
-void deselectAll(board_t board);
 void detargetAll(board_t board);
+void performMove(board_t board, struct Square* from, unsigned char toFile, unsigned char toRank);
 
-void calculateTargets();
+
+void calculateValidTargets(board_t board, Piece* piece);
+
+bool isWhite(Piece* piece);
+bool isBlack(Piece* piece);
+bool isEnemy(Piece* me, Piece* that);
 
 
 #endif // BOARD_H

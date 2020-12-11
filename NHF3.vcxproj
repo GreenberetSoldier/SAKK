@@ -89,6 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\libs\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,13 +144,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="board.c" />
-    <ClCompile Include="pawn.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="textures.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="board.h" />
-    <ClInclude Include="pawn.h" />
     <ClInclude Include="textures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
