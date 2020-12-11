@@ -135,8 +135,8 @@ void calculateValidTargets(board_t board, Piece* piece) {
 				}
 			//upleft: ++rank --file
 			if (piece->rank < maxRank && piece->file > minFile)
-				for (int8_t i = piece->file - 1; i >= minFile; i--)
-				for (int8_t j = piece->rank + 1; j <= maxRank; j++) {
+				for (int8_t i = piece->file - 1, j = piece->rank + 1; i >= minFile && j <= maxRank; i--, j++)
+				{
 					if (board[i][j].pieceOnSquare == NULL)
 						board[i][j].target = true;
 					else {
