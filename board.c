@@ -6,14 +6,10 @@
 #include <math.h>
 #include "board.h"
 
-
-char maxBlack = BPawnH;
-char minWhite = WPawnA;
-
+const char maxBlack = BPawnH;
+const char minWhite = WPawnA;
 
 void calculateValidTargets(board_t board, Piece* piece) {
-
-	uint8_t i;
 
 	switch (piece->type) {
 		case WPawnA:
@@ -73,45 +69,45 @@ void calculateValidTargets(board_t board, Piece* piece) {
 		case BRookB:
 			//up: ++rank
 			if (piece->rank < maxRank)
-				for (int8_t i = piece->rank + 1; i <= maxRank ; i++) {
-					if (board[piece->file][i].pieceOnSquare == NULL)
-						board[piece->file][i].target = true;
+				for (int8_t r = piece->rank + 1; r <= maxRank ; r++) {
+					if (board[piece->file][r].pieceOnSquare == NULL)
+						board[piece->file][r].target = true;
 					else {
-						if (isEnemy(piece, board[piece->file][i].pieceOnSquare))
-							board[piece->file][i].target = true;
+						if (isEnemy(piece, board[piece->file][r].pieceOnSquare))
+							board[piece->file][r].target = true;
 						break;
 					}
 				}
 			//down: --rank
 			if (piece->rank > minRank)
-				for (int8_t i = piece->rank - 1; i >= minRank; i--) {
-					if (board[piece->file][i].pieceOnSquare == NULL)
-						board[piece->file][i].target = true;
+				for (int8_t r = piece->rank - 1; r >= minRank; r--) {
+					if (board[piece->file][r].pieceOnSquare == NULL)
+						board[piece->file][r].target = true;
 					else {
-						if (isEnemy(piece, board[piece->file][i].pieceOnSquare))
-							board[piece->file][i].target = true;
+						if (isEnemy(piece, board[piece->file][r].pieceOnSquare))
+							board[piece->file][r].target = true;
 						break;
 					}
 				}
 			//right: ++file
 			if (piece->file < maxFile)
-				for (int8_t i = piece->file + 1; i <= maxFile; i++) {
-					if (board[i][piece->rank].pieceOnSquare == NULL)
-						board[i][piece->rank].target = true;
+				for (int8_t f = piece->file + 1; f <= maxFile; f++) {
+					if (board[f][piece->rank].pieceOnSquare == NULL)
+						board[f][piece->rank].target = true;
 					else {
-						if (isEnemy(piece, board[piece->file][i].pieceOnSquare))
-							board[piece->file][i].target = true;
+						if (isEnemy(piece, board[f][piece->rank].pieceOnSquare))
+							board[f][piece->rank].target = true;
 						break;
 					}
 				}
 			//left: --file
 			if (piece->file > minFile)
-				for (int8_t i = piece->file - 1; i >= minFile; i--) {
-					if (board[i][piece->rank].pieceOnSquare == NULL)
-						board[i][piece->rank].target = true;
+				for (int8_t f = piece->file - 1; f >= minFile; f--) {
+					if (board[f][piece->rank].pieceOnSquare == NULL)
+						board[f][piece->rank].target = true;
 					else {
-						if (isEnemy(piece, board[piece->file][i].pieceOnSquare))
-							board[piece->file][i].target = true;
+						if (isEnemy(piece, board[f][piece->rank].pieceOnSquare))
+							board[f][piece->rank].target = true;
 						break;
 					}
 				}
@@ -123,30 +119,48 @@ void calculateValidTargets(board_t board, Piece* piece) {
 		case BBishopB:
 			//upright: ++rank ++file
 			if (piece->rank < maxRank && piece->file < maxFile)
-				for (int8_t i = piece->file + 1; i <= maxFile; i++)
-				for (int8_t j = piece->rank + 1; j <= maxRank; j++) {
-					if (board[i][j].pieceOnSquare == NULL)
-						board[i][j].target = true;
+				for (int8_t f = piece->file + 1, r = piece->rank + 1; r <= maxRank && f <= maxFile; f++, r++)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
 					else {
-						if (isEnemy(piece, board[i][j].pieceOnSquare))
-							board[i][j].target = true;
-						break;
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
 					}
-				}
+					
 			//upleft: ++rank --file
 			if (piece->rank < maxRank && piece->file > minFile)
-				for (int8_t i = piece->file - 1, j = piece->rank + 1; i >= minFile && j <= maxRank; i--, j++)
-				{
-					if (board[i][j].pieceOnSquare == NULL)
-						board[i][j].target = true;
+				for (int8_t f = piece->file - 1, r = piece->rank + 1; f >= minFile && r <= maxRank; f--, r++)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
 					else {
-						if (isEnemy(piece, board[i][j].pieceOnSquare))
-							board[i][j].target = true;
-						break;
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
 					}
-				}
+					
+			//downleft: --rank --file
+			if (piece->rank > minRank && piece->file > minFile)
+				for (int8_t f = piece->file - 1, r = piece->rank - 1; f >= minFile && r >= minRank; f--, r--)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
+					else {
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
+					}
 
-		
+			//downright: --rank ++file
+			if (piece->rank > minRank && piece->file < maxFile)
+				for (int8_t f = piece->file + 1, r = piece->rank - 1; f <= maxFile && r >= minRank; f++, r--)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
+					else {
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
+					}
+
 		default:
 			break;
 	}

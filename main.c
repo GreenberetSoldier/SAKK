@@ -41,72 +41,29 @@ int main(int argc, char* argv[]) {
 		SDL_RenderClear(renderer);
 	
 		/*load textures*/
-		SDL_Texture* targetT = IMG_LoadTexture(renderer, "target.png");
-		if (targetT == NULL) {
-			printf("Couldn't load texture: targetT");
-			return 1;
-		}
-		SDL_Texture* selectframeT = IMG_LoadTexture(renderer, "selection_frame.png");
-		if (selectframeT == NULL) {
-			printf("Couldn't load texture: selectframeT");
-			return 1;
-		}
-		SDL_Texture* WPawnT = IMG_LoadTexture(renderer, "WPawn.png");
-		if (WPawnT == NULL) {
-			printf("Couldn't load texture: WPawnT");
-			return 1;
-		}
-		SDL_Texture* BPawnT = IMG_LoadTexture(renderer, "BPawn.png");
-		if (BPawnT == NULL) {
-			printf("Couldn't load texture: BPawnT");
-			return 1;
-		}
-		SDL_Texture* WRookT = IMG_LoadTexture(renderer, "WRook.png");
-		if (WPawnT == NULL) {
-			printf("Couldn't load texture: WRookT");
-			return 1;
-		}
-		SDL_Texture* BRookT = IMG_LoadTexture(renderer, "BRook.png");
-		if (BRookT == NULL) {
-			printf("Couldn't load texture: BRookT");
-			return 1;
-		}
-		SDL_Texture* WBishopT = IMG_LoadTexture(renderer, "WBishop.png");
-		if (WPawnT == NULL) {
-			printf("Couldn't load texture: WBishopT");
-			return 1;
-		}
-		SDL_Texture* BBishopT = IMG_LoadTexture(renderer, "BBishop.png");
-		if (BBishopT == NULL) {
-			printf("Couldn't load texture: BBishopT");
-			return 1;
-		}
+		SDL_Texture* targetT      = IMG_LoadTexture(renderer, "target.png");         if (targetT == NULL)      {printf("Couldn't load texture: targetT");exit(1);}
+		SDL_Texture* selectframeT = IMG_LoadTexture(renderer, "selection_frame.png");if (selectframeT == NULL) {printf("Couldn't load texture: selectframeT");exit(1);}
+		SDL_Texture* WPawnT       = IMG_LoadTexture(renderer, "WPawn.png");          if (WPawnT == NULL)       {printf("Couldn't load texture: WPawnT");exit(1);}
+		SDL_Texture* BPawnT       = IMG_LoadTexture(renderer, "BPawn.png");          if (BPawnT == NULL)       {printf("Couldn't load texture: BPawnT");exit(1);}
+		SDL_Texture* WRookT       = IMG_LoadTexture(renderer, "WRook.png");			 if (WPawnT == NULL)       {printf("Couldn't load texture: WRookT");exit(1);}
+		SDL_Texture* BRookT       = IMG_LoadTexture(renderer, "BRook.png");          if (BRookT == NULL)       {printf("Couldn't load texture: BRookT");exit(1);}
+		SDL_Texture* WBishopT     = IMG_LoadTexture(renderer, "WBishop.png");        if (WPawnT == NULL)       {printf("Couldn't load texture: WBishopT");exit(1);}
+		SDL_Texture* BBishopT     = IMG_LoadTexture(renderer, "BBishop.png");		 if (BBishopT == NULL)     {printf("Couldn't load texture: BBishopT");exit(1);}
+		SDL_Texture* BoardT       = IMG_LoadTexture(renderer, "BoardT.jpg");         if (BoardT == NULL)       {printf("Couldn't load texture: BoardT");exit(1);}
 
-		SDL_Texture* BoardT = IMG_LoadTexture(renderer, "BoardT.jpg");
-		if (BoardT == NULL) {
-			printf("Couldn't load texture: BoardT");
-			return 1;
-		}
-
-
-	
 		//initializing empty board
 		for (int file = minFile; file <= maxFile; file++)
 			for (int rank = 0; rank <= maxRank; rank++)
 				board[file][rank].pieceOnSquare = NULL;
 		detargetAll(board);
 
-		//TestMethod(board);
-
 		//create all pieces
 		Piece WPawna = { WPawnA, (unsigned char)minFile, (unsigned char)minRank + 1, false, false };
 		Piece WRooka = { WRookA, (unsigned char)minFile, (unsigned char)minRank, false, false };
-
 		Piece BPawna = { BPawnA, (unsigned char)minFile, (unsigned char)maxRank - 1, false, false };
 		Piece BRooka = { BRookA, (unsigned char)minFile, (unsigned char)maxRank, false, false };
-
-		Piece WBishopa = { WBishopA, (unsigned char)3, (unsigned char)minRank, false, false };
-		Piece BBishopa = { BBishopA, (unsigned char)3, (unsigned char)maxRank, false, false };
+		Piece WBishopa = { WBishopA, (unsigned char)2, (unsigned char)minRank, false, false };
+		Piece BBishopa = { BBishopA, (unsigned char)2, (unsigned char)maxRank, false, false };
 
 		board[WPawna.file][WPawna.rank].pieceOnSquare = &WPawna;
 		board[BPawna.file][BPawna.rank].pieceOnSquare = &BPawna;
@@ -116,29 +73,31 @@ int main(int argc, char* argv[]) {
 		board[BBishopa.file][BBishopa.rank].pieceOnSquare = &BBishopa;
 		/////////////////////////////////////////////////////
 
-	//create utils
+	//create utility variables
 	SDL_Event event;
 	bool quit = false;
-	unsigned char clickedFile, clickedRank;
-	//struct Piece* selected = NULL;
+	struct Square* clicked = NULL;
 	struct Square* selected = NULL;
 
 	while (!quit) {
 		SDL_RenderClear(renderer);
-		//drawBoard(&initialSquareForDraw, renderer);
 		drawBoard2(renderer, BoardT);
 		//draw all pieces
-		//TODO: taken state of pieces has to be taken into consideration
-		drawPiece(renderer, WPawnT, squareSize * WPawna.file, squareSize * (maxRank - WPawna.rank));
-		drawPiece(renderer, BPawnT, squareSize * BPawna.file, squareSize * (maxRank - BPawna.rank));
-		drawPiece(renderer, WRookT, squareSize * WRooka.file, squareSize * (maxRank - WRooka.rank));
-		drawPiece(renderer, BRookT, squareSize * BRooka.file, squareSize * (maxRank - BRooka.rank));
-		drawPiece(renderer, WBishopT, squareSize* WBishopa.file, squareSize* (maxRank - WBishopa.rank));
-		drawPiece(renderer, BBishopT, squareSize* BBishopa.file, squareSize* (maxRank - BBishopa.rank));
-		drawTargets(renderer, board, targetT);
+		if (WPawna.taken == false)   drawItem(renderer, WPawnT,   WPawna.file,   WPawna.rank);
+		if (BPawna.taken == false)   drawItem(renderer, BPawnT,   BPawna.file,   BPawna.rank);
+		if (WRooka.taken == false)   drawItem(renderer, WRookT,   WRooka.file,   WRooka.rank);
+		if (BRooka.taken == false)   drawItem(renderer, BRookT,   BRooka.file,   BRooka.rank);
+		if (WBishopa.taken == false) drawItem(renderer, WBishopT, WBishopa.file, WBishopa.rank);
+		if (BBishopa.taken == false) drawItem(renderer, BBishopT, BBishopa.file, BBishopa.rank);
+		//draw selection frame and all target points
 		if (selected != NULL)
-			drawSelection(renderer, selectframeT, squareSize * selected->pieceOnSquare->file, squareSize * (maxRank - selected->pieceOnSquare->rank));
-
+			drawItem(renderer, selectframeT, selected->pieceOnSquare->file, selected->pieceOnSquare->rank);
+		for (int rank = maxRank; rank >= minRank; rank--) {
+			for (int file = minFile; file <= maxFile; file++) {
+				if (board[file][rank].target == true)
+					drawItem(renderer, targetT, file, rank);
+			}
+		}
 		//actual screen change
 		SDL_RenderPresent(renderer);
 		SDL_WaitEvent(&event);
@@ -157,44 +116,31 @@ int main(int argc, char* argv[]) {
 					event.button.y > (int)windowHeight )
 					break;
 				
-				clickedFile = event.button.x / squareSize;
-				clickedRank = maxRank - (event.button.y / squareSize);
+				clicked = &board[event.button.x / squareSize][maxRank - (event.button.y / squareSize)];
 		
-				if (selected != NULL) {
-					if (board[clickedFile][clickedRank].target == true) {
-						performMove(selected, &board[clickedFile][clickedRank], clickedFile, clickedRank);
-					}
-					selected = NULL;
-					detargetAll(board);
-				}
 				//if there was no selection before
-				else {
-					//make clicked field selected
-					if (board[clickedFile][clickedRank].pieceOnSquare != NULL) {
-						selected = &board[clickedFile][clickedRank];
+				if (selected == NULL) {
+					//make clicked field selected only if it has a piece
+					if (clicked->pieceOnSquare != NULL) {
+						selected = clicked;
 						calculateValidTargets(board, selected->pieceOnSquare);
 					}
 					//do nothing if clicked on empty field
 				}
-				
-
-				//DEBUG
-				for (int rank = maxRank; rank >= minRank; rank--) {
-					for (int file = minFile; file <= maxFile; file++) {
-						if (board[file][rank].target == true)
-							printf("1 ");
-						else
-							printf("0 ");
+				else {
+					if (clicked->target == true) {
+						performMove(selected, clicked, event.button.x / squareSize, maxRank - (event.button.y / squareSize));
 					}
-					printf("\n");
+					selected = NULL;
+					detargetAll(board);
 				}
-				//DEBUG
 
 				break;
 
 			case SDL_QUIT:
 				quit = true;
 				break;
+
 		} //switch
 
 	} //while
@@ -208,13 +154,4 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-/*
-void TestMethod(Square*** board){
-	for (int k = 0; k < 8; k++) {
-		for (int i = 0; i < 8; i++) {
-			board[k][i] = board[k][i];
-		}
-	}
-}
 
-*/

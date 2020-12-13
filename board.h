@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <SDL.h>
 
-#define windowWidht  1280
+#define windowWidht  720
 #define windowHeight 720
 #define squareSize   90
 #define pieceWidht   285
@@ -30,8 +30,8 @@ enum PieceType {
 	WRookA, WKinghtA, WBishopA, WQueen,  WKing, WBishopB, WKnightB, WRookB
 };
 
-extern char maxBlack;
-extern char minWhite;
+extern const char maxBlack;
+extern const char minWhite;
 
 typedef struct Piece {
 	enum PieceType type;
@@ -56,7 +56,6 @@ typedef struct Square board_t[filenum][ranknum];
 
 void detargetAll(board_t board);
 void performMove(board_t board, struct Square* from, unsigned char toFile, unsigned char toRank);
-
 
 void calculateValidTargets(board_t board, Piece* piece);
 
