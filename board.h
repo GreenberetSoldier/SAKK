@@ -23,11 +23,11 @@
 #define minRank 0
 
 enum PieceType {
-	BRookA, BKinghtA, BBishopA, BQueen,  BKing, BBishopB, BKnightB, BRookB,
+	BRookA, BKnightA, BBishopA, BQueen,  BKing, BBishopB, BKnightB, BRookB,
 	BPawnA,   BPawnB,   BPawnC, BPawnD, BPawnE,   BPawnF,   BPawnG, BPawnH,
 
 	WPawnA,   WPawnB,   WPawnC, WPawnD, WPawnE,   WPawnF,   WPawnG, WPawnH,
-	WRookA, WKinghtA, WBishopA, WQueen,  WKing, WBishopB, WKnightB, WRookB
+	WRookA, WKnightA, WBishopA, WQueen,  WKing, WBishopB, WKnightB, WRookB
 };
 
 extern const char maxBlack;
