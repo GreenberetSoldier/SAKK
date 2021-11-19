@@ -166,18 +166,18 @@ void calculateValidTargets(board_t board, Piece* piece) {
 		case BKnightA:
 		case BKnightB:
 							
-			int8_t offset[8][2] = { {1, 2},{-1, 2},{2, 1},{2, -1},{1, -2},{-1, -2},{-2, 1},{-2, -1} }; // {fileoffset, rankoffset}
-			for (int i = 0; i < 8; ++i) {
-				int8_t f = piece->file + offset[i][0];
-				int8_t r = piece->rank + offset[i][1];
-				if (f <= maxFile &&
-					f >= minFile &&
-					r <= maxRank &&
-					r >= minRank)
-					if (board[f][r].pieceOnSquare == NULL || (isEnemy(piece, board[f][r].pieceOnSquare)))
-						board[f][r].target = true;
-			}
-/*
+			//int8_t offset[8][2] = { {1, 2},{-1, 2},{2, 1},{2, -1},{1, -2},{-1, -2},{-2, 1},{-2, -1} }; // {fileoffset, rankoffset}
+			//for (int i = 0; i < 8; ++i) {
+			//	int8_t f = piece->file + offset[i][0];
+			//	int8_t r = piece->rank + offset[i][1];
+			//	if (f <= maxFile &&
+			//		f >= minFile &&
+			//		r <= maxRank &&
+			//		r >= minRank)
+			//		if (board[f][r].pieceOnSquare == NULL || (isEnemy(piece, board[f][r].pieceOnSquare)))
+			//			board[f][r].target = true;
+			//}
+
 			//upright file+ rank++
 			if (piece->file < maxFile && piece->rank < maxRank - 1) {
 				if (board[piece->file + 1][piece->rank + 2].pieceOnSquare == NULL || (isEnemy(piece, board[piece->file + 1][piece->rank + 2].pieceOnSquare))) {
@@ -235,10 +235,27 @@ void calculateValidTargets(board_t board, Piece* piece) {
 			}
 			
 			break;
-*/
+
 
 		case WQueen:
 		case BQueen:
+			
+			
+			
+			
+			//int8_t queenDirection[8][2] = { {1,0},{1,1},{1,-1},{0,1},{0,-1},{-1,1},{-1,0},{-1,-1} };
+			//for (int8_t dir = 0; dir < 8; ++dir) {
+			//	for (int8_t f = piece->file + 1, r = piece->rank + 1; f <= maxFile && r <= maxRank; ++f, ++r) {
+			//		if (board[queenDirection[dir][0] * f][queenDirection[dir][1] * r].pieceOnSquare == NULL) {
+			//			board[queenDirection[dir][0] * f][queenDirection[dir][1] * r].target = true;
+			//		}
+			//		else {
+			//			if (isEnemy(piece, board[queenDirection[dir][0] * f][queenDirection[dir][1] * r].pieceOnSquare))
+			//				board[queenDirection[dir][0] * f][queenDirection[dir][1] * r].target = true;
+
+			//		}
+			//	}
+			//}
 			//upright: ++rank ++file
 			if (piece->rank < maxRank && piece->file < maxFile)
 				for (int8_t f = piece->file + 1, r = piece->rank + 1; r <= maxRank && f <= maxFile; f++, r++)
