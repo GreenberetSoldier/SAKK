@@ -165,7 +165,19 @@ void calculateValidTargets(board_t board, Piece* piece) {
 		case WKnightB:
 		case BKnightA:
 		case BKnightB:
-
+							
+			int8_t offset[8][2] = { {1, 2},{-1, 2},{2, 1},{2, -1},{1, -2},{-1, -2},{-2, 1},{-2, -1} }; // {fileoffset, rankoffset}
+			for (int i = 0; i < 8; ++i) {
+				int8_t f = piece->file + offset[i][0];
+				int8_t r = piece->rank + offset[i][1];
+				if (f <= maxFile &&
+					f >= minFile &&
+					r <= maxRank &&
+					r >= minRank)
+					if (board[f][r].pieceOnSquare == NULL || (isEnemy(piece, board[f][r].pieceOnSquare)))
+						board[f][r].target = true;
+			}
+/*
 			//upright file+ rank++
 			if (piece->file < maxFile && piece->rank < maxRank - 1) {
 				if (board[piece->file + 1][piece->rank + 2].pieceOnSquare == NULL || (isEnemy(piece, board[piece->file + 1][piece->rank + 2].pieceOnSquare))) {
@@ -223,6 +235,8 @@ void calculateValidTargets(board_t board, Piece* piece) {
 			}
 			
 			break;
+*/
+
 		case WQueen:
 		case BQueen:
 			//upright: ++rank ++file
@@ -363,8 +377,8 @@ void performMove(struct Square* from, struct Square* to, unsigned char toFile, u
 	if (to->pieceOnSquare != NULL)
 		to->pieceOnSquare->taken = true;
 
-	// a jelenlegi adatmodellünkben egy mezõbõl nem tudhatjuk annak koordinátáit!...
-		// ezért a lépéshez szükség van a cél koordinátáira is külön, a cél mezõ önmagában nem elég
+	// a jelenlegi adatmodellÃ¼nkben egy mezÅ‘bÅ‘l nem tudhatjuk annak koordinÃ¡tÃ¡it!...
+		// ezÃ©rt a lÃ©pÃ©shez szÃ¼ksÃ©g van a cÃ©l koordinÃ¡tÃ¡ira is kÃ¼lÃ¶n, a cÃ©l mezÅ‘ Ã¶nmagÃ¡ban nem elÃ©g
 	from->pieceOnSquare->file = toFile;
 	from->pieceOnSquare->rank = toRank;
 	to->pieceOnSquare = from->pieceOnSquare;
