@@ -49,7 +49,8 @@ int main(int argc, char* argv[]) {
 		SDL_Texture* BRookT       = IMG_LoadTexture(renderer, "BRook.png");          if (BRookT == NULL)       {printf("Couldn't load texture: BRookT");exit(1);}
 		SDL_Texture* WBishopT     = IMG_LoadTexture(renderer, "WBishop.png");        if (WPawnT == NULL)       {printf("Couldn't load texture: WBishopT");exit(1);}
 		SDL_Texture* BBishopT     = IMG_LoadTexture(renderer, "BBishop.png");		 if (BBishopT == NULL)     {printf("Couldn't load texture: BBishopT");exit(1);}
-		SDL_Texture* WKnightT     = IMG_LoadTexture(renderer, "WKnight.png");		 if (WKnightT == NULL)     { printf("Couldn't load texture: WPawnT"); exit(1); }
+		SDL_Texture* WKnightT     = IMG_LoadTexture(renderer, "WKnight.png");		 if (WKnightT == NULL)     { printf("Couldn't load texture: WKightT"); exit(1); }
+		SDL_Texture* WQueenT      = IMG_LoadTexture(renderer, "WQueen.png");         if (WQueenT == NULL) { printf("Couldn't load texture: BoardT"); exit(1); }
 		SDL_Texture* BoardT       = IMG_LoadTexture(renderer, "BoardT.jpg");         if (BoardT == NULL)       {printf("Couldn't load texture: BoardT");exit(1);}
 		
 		//initializing empty board
@@ -65,7 +66,8 @@ int main(int argc, char* argv[]) {
 		Piece BRooka = { BRookA, (unsigned char)minFile, (unsigned char)maxRank, false, false };
 		Piece WBishopa = { WBishopA, (unsigned char)2, (unsigned char)minRank, false, false };
 		Piece BBishopa = { BBishopA, (unsigned char)2, (unsigned char)maxRank, false, false };
-		Piece WKnighta = { WKnightA, (unsigned char)1, (unsigned char)minRank, false,false };
+		Piece WKnighta = { WKnightA, (unsigned char)1, (unsigned char)minRank, false, false };
+		Piece wQueen = { WQueen, (unsigned char)3, (unsigned char)minRank, false, false };
 
 		board[WPawna.file][WPawna.rank].pieceOnSquare = &WPawna;
 		board[BPawna.file][BPawna.rank].pieceOnSquare = &BPawna;
@@ -74,6 +76,7 @@ int main(int argc, char* argv[]) {
 		board[WBishopa.file][WBishopa.rank].pieceOnSquare = &WBishopa;
 		board[BBishopa.file][BBishopa.rank].pieceOnSquare = &BBishopa;
 		board[WKnighta.file][WKnighta.rank].pieceOnSquare = &WKnighta;
+		board[wQueen.file][wQueen.rank].pieceOnSquare = &wQueen;
 		/////////////////////////////////////////////////////
 
 	//create utility variables
@@ -93,6 +96,7 @@ int main(int argc, char* argv[]) {
 		if (WBishopa.taken == false) drawItem(renderer, WBishopT, WBishopa.file, WBishopa.rank);
 		if (BBishopa.taken == false) drawItem(renderer, BBishopT, BBishopa.file, BBishopa.rank);
 		if (WKnighta.taken == false) drawItem(renderer, WKnightT, WKnighta.file, WKnighta.rank);
+		if (wQueen.taken == false) drawItem(renderer, WQueenT, wQueen.file, wQueen.rank);
 		//draw selection frame and all target points
 		if (selected != NULL)
 			drawItem(renderer, selectframeT, selected->pieceOnSquare->file, selected->pieceOnSquare->rank);
