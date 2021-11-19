@@ -223,6 +223,97 @@ void calculateValidTargets(board_t board, Piece* piece) {
 			}
 			
 			break;
+		case WQueen:
+		case BQueen:
+			//upright: ++rank ++file
+			if (piece->rank < maxRank && piece->file < maxFile)
+				for (int8_t f = piece->file + 1, r = piece->rank + 1; r <= maxRank && f <= maxFile; f++, r++)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
+					else {
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
+					}
+
+			//upleft: ++rank --file
+			if (piece->rank < maxRank && piece->file > minFile)
+				for (int8_t f = piece->file - 1, r = piece->rank + 1; f >= minFile && r <= maxRank; f--, r++)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
+					else {
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
+					}
+
+			//downleft: --rank --file
+			if (piece->rank > minRank && piece->file > minFile)
+				for (int8_t f = piece->file - 1, r = piece->rank - 1; f >= minFile && r >= minRank; f--, r--)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
+					else {
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
+					}
+
+			//downright: --rank ++file
+			if (piece->rank > minRank && piece->file < maxFile)
+				for (int8_t f = piece->file + 1, r = piece->rank - 1; f <= maxFile && r >= minRank; f++, r--)
+					if (board[f][r].pieceOnSquare == NULL)
+						board[f][r].target = true;
+					else {
+						if (isEnemy(piece, board[f][r].pieceOnSquare))
+							board[f][r].target = true;
+						break; //for
+					}
+
+			//up: ++rank
+			if (piece->rank < maxRank)
+				for (int8_t r = piece->rank + 1; r <= maxRank; r++) {
+					if (board[piece->file][r].pieceOnSquare == NULL)
+						board[piece->file][r].target = true;
+					else {
+						if (isEnemy(piece, board[piece->file][r].pieceOnSquare))
+							board[piece->file][r].target = true;
+						break;
+					}
+				}
+			//down: --rank
+			if (piece->rank > minRank)
+				for (int8_t r = piece->rank - 1; r >= minRank; r--) {
+					if (board[piece->file][r].pieceOnSquare == NULL)
+						board[piece->file][r].target = true;
+					else {
+						if (isEnemy(piece, board[piece->file][r].pieceOnSquare))
+							board[piece->file][r].target = true;
+						break;
+					}
+				}
+			//right: ++file
+			if (piece->file < maxFile)
+				for (int8_t f = piece->file + 1; f <= maxFile; f++) {
+					if (board[f][piece->rank].pieceOnSquare == NULL)
+						board[f][piece->rank].target = true;
+					else {
+						if (isEnemy(piece, board[f][piece->rank].pieceOnSquare))
+							board[f][piece->rank].target = true;
+						break;
+					}
+				}
+			//left: --file
+			if (piece->file > minFile)
+				for (int8_t f = piece->file - 1; f >= minFile; f--) {
+					if (board[f][piece->rank].pieceOnSquare == NULL)
+						board[f][piece->rank].target = true;
+					else {
+						if (isEnemy(piece, board[f][piece->rank].pieceOnSquare))
+							board[f][piece->rank].target = true;
+						break;
+					}
+				}
+			break;
 		default:
 				break;
 		}
