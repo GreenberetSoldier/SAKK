@@ -340,10 +340,10 @@ void calculateValidTargets(board_t board, Piece* piece) {
 			//both pieces havent moved yet 
 			if (piece->movedYet == false && board[piece->file - 4][piece->rank].pieceOnSquare->movedYet == false) {
 				
-				//get all target squares
+				//get all target squares 
 				for (int8_t f = 0, r = 0; f < 8 && r < 8; ++f, ++r) {
 					if (board[f][r].pieceOnSquare != NULL) {
-						calculateValidTargets(board,board[f][r].pieceOnSquare);
+						calculateValidTargets(board,board[f][r].pieceOnSquare); //talan ez a bug
 					}
 				}
 				
