@@ -160,6 +160,7 @@ void calculateValidTargets(board_t board, Piece* piece) {
 							board[f][r].target = true;
 						break; //for
 					}
+			break;
 
 		case WKnightA:
 		case WKnightB:

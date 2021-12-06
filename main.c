@@ -50,8 +50,9 @@ int main(int argc, char* argv[]) {
 		SDL_Texture* WBishopT     = IMG_LoadTexture(renderer, "WBishop.png");        if (WPawnT == NULL)       {printf("Couldn't load texture: WBishopT");exit(1);}
 		SDL_Texture* BBishopT     = IMG_LoadTexture(renderer, "BBishop.png");		 if (BBishopT == NULL)     {printf("Couldn't load texture: BBishopT");exit(1);}
 		SDL_Texture* WKnightT     = IMG_LoadTexture(renderer, "WKnight.png");		 if (WKnightT == NULL)     { printf("Couldn't load texture: WKightT"); exit(1); }
-		SDL_Texture* WQueenT      = IMG_LoadTexture(renderer, "WQueen.png");         if (WQueenT == NULL) { printf("Couldn't load texture: BoardT"); exit(1); }
+		SDL_Texture* WQueenT      = IMG_LoadTexture(renderer, "WQueen.png");         if (WQueenT == NULL) { printf("Couldn't load texture: WQuennT"); exit(1); }
 		SDL_Texture* BoardT       = IMG_LoadTexture(renderer, "BoardT.jpg");         if (BoardT == NULL)       {printf("Couldn't load texture: BoardT");exit(1);}
+		SDL_Texture* WKingT		  = IMG_LoadTexture(renderer, "WKing.png");         if (WKingT == NULL) { printf("Couldn't load texture: WKingT"); exit(1); }
 		
 		//initializing empty board
 		for (int file = minFile; file <= maxFile; file++)
@@ -68,6 +69,7 @@ int main(int argc, char* argv[]) {
 		Piece BBishopa = { BBishopA, (unsigned char)2, (unsigned char)maxRank, false, false };
 		Piece WKnighta = { WKnightA, (unsigned char)1, (unsigned char)minRank, false, false };
 		Piece wQueen = { WQueen, (unsigned char)3, (unsigned char)minRank, false, false };
+		Piece wKing = { WKing,(unsigned char) 4,  (unsigned char)minRank, false, false };
 
 		board[WPawna.file][WPawna.rank].pieceOnSquare = &WPawna;
 		board[BPawna.file][BPawna.rank].pieceOnSquare = &BPawna;
@@ -77,6 +79,7 @@ int main(int argc, char* argv[]) {
 		board[BBishopa.file][BBishopa.rank].pieceOnSquare = &BBishopa;
 		board[WKnighta.file][WKnighta.rank].pieceOnSquare = &WKnighta;
 		board[wQueen.file][wQueen.rank].pieceOnSquare = &wQueen;
+		board[wKing.file][wKing.rank].pieceOnSquare = &wKing;
 		/////////////////////////////////////////////////////
 
 	//create utility variables
@@ -97,6 +100,8 @@ int main(int argc, char* argv[]) {
 		if (BBishopa.taken == false) drawItem(renderer, BBishopT, BBishopa.file, BBishopa.rank);
 		if (WKnighta.taken == false) drawItem(renderer, WKnightT, WKnighta.file, WKnighta.rank);
 		if (wQueen.taken == false) drawItem(renderer, WQueenT, wQueen.file, wQueen.rank);
+		if (wKing.taken == false) drawItem(renderer, WKingT, wKing.file, wKing.rank);
+
 		//draw selection frame and all target points
 		if (selected != NULL)
 			drawItem(renderer, selectframeT, selected->pieceOnSquare->file, selected->pieceOnSquare->rank);
