@@ -103,7 +103,6 @@ int main(int argc, char* argv[]) {
 		SDL_WaitEvent(&event);
 		switch (event.type) {
 			case SDL_MOUSEBUTTONDOWN:
-				printf("\n");
 				
 				//currently only handling left mouse clicks
 				if ((event.button.button) != SDL_BUTTON_LEFT)

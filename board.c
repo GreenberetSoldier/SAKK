@@ -208,6 +208,9 @@ void performMove(struct Square* from, struct Square* to, unsigned char toFile, u
 	if (to->pieceOnSquare != NULL)
 		to->pieceOnSquare->taken = true;
 
+	// a jelenlegi adatmodellünkben egy mezõbõl nem tudhatjuk annak koordinátáit!...
+	// (ez eredetileg benne volt, és én vettem ki.. - Gábor)
+	// ezért a lépéshez szükség van a cél koordinátáira is külön, a cél mezõ önmagában nem elég
 	from->pieceOnSquare->file = toFile;
 	from->pieceOnSquare->rank = toRank;
 	to->pieceOnSquare = from->pieceOnSquare;
