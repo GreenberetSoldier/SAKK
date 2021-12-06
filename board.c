@@ -8,8 +8,18 @@
 
 const char maxBlack = BPawnH;
 const char minWhite = WPawnA;
+extern board_t board;
 
-void calculateValidTargets(board_t board, Piece* piece) {
+void setTargets(struct Square * sq, bool white, bool current, bool specific) {
+	if (current)
+		sq->target = true;
+	if (specific) {
+		if (white) sq->targetOfWhite = true;
+		else       sq->targetOfBlack = true;
+	}
+}
+
+void calculateValidTargets(Piece* piece, bool current, bool specific) {
 
 	switch (piece->type) {
 		case WPawnA:
@@ -24,17 +34,17 @@ void calculateValidTargets(board_t board, Piece* piece) {
 			if (piece->rank < maxRank) {
 				//up (self fw, director's up)
 				if (board[piece->file][piece->rank + 1].pieceOnSquare == NULL)
-					board[piece->file][piece->rank + 1].target = true;
+					setTargets(&board[piece->file][piece->rank + 1], isWhite(piece), current, specific);
 				//take up left (self fw left, directors's up left)
 				if (piece->file > minFile && isEnemy(piece, board[piece->file - 1][piece->rank + 1].pieceOnSquare))
-					board[piece->file - 1][piece->rank + 1].target = true;
+					setTargets(&board[piece->file - 1][piece->rank + 1], isWhite(piece), current, specific);
 				//take up right (self fw right, directors's up right)
 				if (piece->file < maxFile && isEnemy(piece, board[piece->file + 1][piece->rank + 1].pieceOnSquare))
-					board[piece->file + 1][piece->rank + 1].target = true;
+					setTargets(&board[piece->file + 1][piece->rank + 1], isWhite(piece), current, specific);
 			}
 			//unmoved, up: rank++++
 			if (piece->movedYet == false && board[piece->file][piece->rank + 2].pieceOnSquare == NULL)
-				board[piece->file][piece->rank + 2].target = true;
+				setTargets(&board[piece->file][piece->rank + 2], isWhite(piece), current, specific);
 			break;
 		case BPawnA:
 		case BPawnB:
@@ -64,7 +74,7 @@ void calculateValidTargets(board_t board, Piece* piece) {
 			break;
 
 		case WRookA:
-		case WRookB:
+		case WRookB:	
 		case BRookA:
 		case BRookB:
 			//up: ++rank
@@ -331,26 +341,23 @@ void calculateValidTargets(board_t board, Piece* piece) {
 				if ((f <= maxFile)
 					&& (f >= minFile)
 					&& (r <= maxFile)
-					&& (r >= minRank)){
-						//check if squares are empty or have enemy
+					&& (r >= minRank)) {
+					//check if squares are empty or have enemy
 					if (board[f][r].pieceOnSquare == NULL || (isEnemy(piece, board[f][r].pieceOnSquare))) {
 						board[f][r].target = true;
 					}
 				}
-
-				
 			}
 
-
-			/*
 			//long castle 
-			//both pieces havent moved yet 
+			//both pieces havent moved yet
 			if (piece->movedYet == false && board[piece->file - 4][piece->rank].pieceOnSquare->movedYet == false) {
 				
 				//get all target squares 
-				for (int8_t f = 0, r = 0; f < 8 && r < 8; ++f, ++r) {
-					if (board[f][r].pieceOnSquare != NULL) {
-						calculateValidTargets(board,board[f][r].pieceOnSquare); //talan ez a bug
+				for (int8_t f = 0; f <= maxFile; ++f) 
+					for (int8_t r = 0; r <= maxRank; ++r) {
+						if (board[f][r].pieceOnSquare != NULL &&  isEnemy(piece, board[f][r].pieceOnSquare)) {
+						//... TODO: targetek csokkentese az enemy target alapján
 					}
 				}
 				
@@ -426,4 +433,14 @@ void performMove(struct Square* from, struct Square* to, unsigned char toFile, u
 	from->pieceOnSquare = NULL;
 
 	to->pieceOnSquare->movedYet = true;
+	
+	calculateallSpacificTargets();
+
+}
+
+
+void calculateallSpacificTargets() {
+	for (0 .. maxFile)
+		for (0 .. maxRow)
+			calculateValidTargets(Piece * piece, bool current, bool specific)
 }

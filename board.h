@@ -48,6 +48,8 @@ typedef struct Color {
 struct Square {
 	Piece* pieceOnSquare;
 	bool target;
+	bool targetOfBlack;
+	bool targetOfWhite;
 };
 
 
