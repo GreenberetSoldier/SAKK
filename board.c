@@ -160,6 +160,7 @@ void calculateValidTargets(board_t board, Piece* piece) {
 							board[f][r].target = true;
 						break; //for
 					}
+			break;
 
 		case WKnightA:
 		case WKnightB:
@@ -313,6 +314,52 @@ void calculateValidTargets(board_t board, Piece* piece) {
 						break;
 					}
 				}
+			break;
+
+		case WKing:
+		case BKing:
+			
+			
+			//normal movement
+			int kingDirectionArray[8][2] = { {1,-1},{1,0},{0,1}, {1,1},{0,-1},{-1,0},{-1,-1},{1,-1} };
+			//for each element of direction array
+			for (int8_t d = 0; d < 8; ++d) {
+				if ((piece->file + kingDirectionArray[d][0] < 8)
+					&& (piece->file + kingDirectionArray[d][0] > 0)
+					&& (piece->rank + kingDirectionArray[d][1] < 8)
+					&& (piece->rank + kingDirectionArray[d][1] > 0)){
+						board[piece->file + piece->file + kingDirectionArray[d][0]][piece->rank + kingDirectionArray[d][1]].target = true;
+				}
+
+				
+			}
+
+
+			
+			//long castle 
+			//both pieces havent moved yet 
+			if (piece->movedYet == false && board[piece->file - 4][piece->rank].pieceOnSquare->movedYet == false) {
+				
+				//get all target squares
+				for (int8_t f = 0, r = 0; f < 8 && r < 8; ++f, ++r) {
+					if (board[f][r].pieceOnSquare != NULL) {
+						calculateValidTargets(board,board[f][r].pieceOnSquare);
+					}
+				}
+				
+				//check if the squares vbetween are targets and empty
+				bool isItSafe = true;
+				for (int8_t i = 1; 1 <= 3; ++i) {
+					if (board[piece->file - i][piece->rank].target == true && board[piece->file - i][piece->rank].pieceOnSquare != NULL) {
+						isItSafe = false;
+					}
+				}
+
+				//if both havent moved and its safe
+				if (isItSafe) {
+					board[piece->file - 2][piece->rank].target = true;
+				}
+			}
 			break;
 		default:
 				break;
