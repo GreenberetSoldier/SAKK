@@ -321,21 +321,28 @@ void calculateValidTargets(board_t board, Piece* piece) {
 			
 			
 			//normal movement
-			int kingDirectionArray[8][2] = { {1,-1},{1,0},{0,1}, {1,1},{0,-1},{-1,0},{-1,-1},{1,-1} };
+			int kingDirectionArray[8][2] = { {-1,1},{1,0},{0,1}, {1,1},{0,-1},{-1,0},{-1,-1},{1,-1} };
 			//for each element of direction array
-			for (int8_t d = 0; d < 8; ++d) {
-				if ((piece->file + kingDirectionArray[d][0] < 8)
-					&& (piece->file + kingDirectionArray[d][0] > 0)
-					&& (piece->rank + kingDirectionArray[d][1] < 8)
-					&& (piece->rank + kingDirectionArray[d][1] > 0)){
-						board[piece->file + piece->file + kingDirectionArray[d][0]][piece->rank + kingDirectionArray[d][1]].target = true;
+			for (int8_t d = 0; d < 8; d++) {
+				
+				int8_t f = piece->file + kingDirectionArray[d][0];
+				int8_t r = piece->rank + kingDirectionArray[d][1];
+				
+				if ((f <= maxFile)
+					&& (f >= minFile)
+					&& (r <= maxFile)
+					&& (r >= minRank)){
+						//check if squares are empty or have enemy
+					if (board[f][r].pieceOnSquare == NULL || (isEnemy(piece, board[f][r].pieceOnSquare))) {
+						board[f][r].target = true;
+					}
 				}
 
 				
 			}
 
 
-			
+			/*
 			//long castle 
 			//both pieces havent moved yet 
 			if (piece->movedYet == false && board[piece->file - 4][piece->rank].pieceOnSquare->movedYet == false) {
@@ -359,7 +366,7 @@ void calculateValidTargets(board_t board, Piece* piece) {
 				if (isItSafe) {
 					board[piece->file - 2][piece->rank].target = true;
 				}
-			}
+			}*/
 			break;
 		default:
 				break;
