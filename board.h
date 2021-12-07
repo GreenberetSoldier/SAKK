@@ -52,14 +52,18 @@ struct Square {
 	bool targetOfBlack;
 };
 
-
 //order: [file][rank]
 typedef struct Square board_t[filenum][ranknum];
 
-void calculateValidTargets(board_t board, Piece* piece, bool selected, bool colorSpecific);
-
-void detargetAll(board_t board);
-void performMove(board_t board, struct Square* from, unsigned char toFile, unsigned char toRank);
+//GLOBAL BOARD ARRAY 
+board_t board; 
+ 
+// FUNCTION DECLARATIONS 
+void detargetAll(); 
+void performMove(struct Square* from, struct Square* to, unsigned char toFile, unsigned char toRank); 
+ 
+void calculateTargets(Piece* piece, bool colorSpecific); 
+void calculateAllColorSpecificTargets();
 
 bool isWhite(Piece* piece);
 bool isBlack(Piece* piece);
