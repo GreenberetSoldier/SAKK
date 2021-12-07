@@ -45,11 +45,11 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 					setSquareTarget(&board[piece->file][piece->rank + 1],true, colorSpecific);
 					
 				//take up left (self fw left, directors's up left)
-				if (piece->file > minFile && isEnemy(piece, board[piece->file - 1][piece->rank + 1].pieceOnSquare))
+				if (piece->file > minFile && colorSpecific ^ isEnemy(piece, board[piece->file - 1][piece->rank + 1].pieceOnSquare))
 					setSquareTarget(&board[piece->file - 1][piece->rank + 1], true, colorSpecific);
 					
 				//take up right (self fw right, directors's up right)
-				if (piece->file < maxFile && isEnemy(piece, board[piece->file + 1][piece->rank + 1].pieceOnSquare))
+				if (piece->file < maxFile && colorSpecific ^ isEnemy(piece, board[piece->file + 1][piece->rank + 1].pieceOnSquare))
 					setSquareTarget(&board[piece->file + 1][piece->rank + 1], true, colorSpecific);
 			}
 			//unmoved, up: rank++++
@@ -72,11 +72,11 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 					setSquareTarget(&board[piece->file][piece->rank - 1], false, colorSpecific);
 
 				//take down right (self fw left, director's down right)
-				if (piece->file < maxFile && isEnemy(piece, board[piece->file + 1][piece->rank - 1].pieceOnSquare))
+				if (piece->file < maxFile && colorSpecific ^ isEnemy(piece, board[piece->file + 1][piece->rank - 1].pieceOnSquare))
 					setSquareTarget(&board[piece->file + 1][piece->rank - 1], false, colorSpecific);
 
 				//take down left (self fw right, directors's down left)
-				if (piece->file > minFile && isEnemy(piece, board[piece->file - 1][piece->rank - 1].pieceOnSquare))
+				if (piece->file > minFile && colorSpecific ^ isEnemy(piece, board[piece->file - 1][piece->rank - 1].pieceOnSquare))
 					setSquareTarget(&board[piece->file - 1][piece->rank - 1], false, colorSpecific);
 
 			}
@@ -95,7 +95,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 						f >= minFile &&
 						r <= maxRank &&
 						r >= minRank) {
-						if (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))
+						if (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))
 							setSquareTarget(&board[f][r], true,  colorSpecific);
 						if (board[f][r].pieceOnSquare != NULL)
 							break; //goto next direction
@@ -113,7 +113,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 						f >= minFile &&
 						r <= maxRank &&
 						r >= minRank) {
-						if (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))
+						if (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))
 							setSquareTarget(&board[f][r], false,  colorSpecific);
 						if (board[f][r].pieceOnSquare != NULL)
 							break; //goto next direction
@@ -131,7 +131,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 						f >= minFile &&
 						r <= maxRank &&
 						r >= minRank) {
-						if (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))
+						if (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))
 							setSquareTarget(&board[f][r], true,  colorSpecific);
 						if (board[f][r].pieceOnSquare != NULL)
 							break; //goto next direction
@@ -149,7 +149,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 						f >= minFile &&
 						r <= maxRank &&
 						r >= minRank) {
-						if (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))
+						if (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))
 							setSquareTarget(&board[f][r], false,  colorSpecific);
 						if (board[f][r].pieceOnSquare != NULL)
 							break; //goto next direction
@@ -167,7 +167,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 					f >= minFile &&
 					r <= maxRank &&
 					r >= minRank)
-					if (board[f][r].pieceOnSquare == NULL || (isEnemy(piece, board[f][r].pieceOnSquare)))
+					if (board[f][r].pieceOnSquare == NULL || (colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare)))
 						setSquareTarget(&board[f][r], true,  colorSpecific);
 			}
 			break;
@@ -181,7 +181,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 					f >= minFile &&
 					r <= maxRank &&
 					r >= minRank)
-					if (board[f][r].pieceOnSquare == NULL || (isEnemy(piece, board[f][r].pieceOnSquare)))
+					if (board[f][r].pieceOnSquare == NULL || (colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare)))
 					setSquareTarget(&board[f][r], false,  colorSpecific);
 			}
 			break;
@@ -195,7 +195,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 						f >= minFile &&
 						r <= maxRank &&
 						r >= minRank) {
-						if (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))
+						if (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))
 							setSquareTarget(&board[f][r], true,  colorSpecific);
 						if (board[f][r].pieceOnSquare != NULL)
 							break; //goto next direction
@@ -212,7 +212,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 						f >= minFile &&
 						r <= maxRank &&
 						r >= minRank) {
-						if (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))
+						if (board[f][r].pieceOnSquare == NULL || colorSpecific ^ colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))
 							setSquareTarget(&board[f][r], false,  colorSpecific);
 						if (board[f][r].pieceOnSquare != NULL)
 							break; //goto next direction
@@ -231,7 +231,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 					&& (r <= maxFile)
 					&& (r >= minRank)) {
 					//check if squares are empty, have enemy or are attacked
-					if (board[f][r].targetOfBlack == false && (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))) {
+					if (board[f][r].targetOfBlack == false && (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))) {
 						setSquareTarget(&board[f][r], true,  colorSpecific);
 					}
 				}
@@ -269,7 +269,7 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 					&& (r <= maxFile)
 					&& (r >= minRank)){
 					//check if squares are empty, have enemy or are attacked
-					if (board[f][r].targetOfWhite == false && (board[f][r].pieceOnSquare == NULL || isEnemy(piece, board[f][r].pieceOnSquare))) {
+					if (board[f][r].targetOfWhite == false && (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))) {
 						setSquareTarget(&board[f][r], true, colorSpecific);
 					}
 				}
