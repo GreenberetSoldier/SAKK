@@ -376,4 +376,20 @@ void performMove(struct Square* from, struct Square* to, unsigned char toFile, u
 	to->pieceOnSquare->movedYet = true;
 
 	calculateAllColorSpecificTargets();
+
+	//newMove();
+}
+
+
+newMove() {
+
+	//head->p = ;
+	//head->fdelta = ;
+	//head->rdelta = ;
+	//head->taken = ;
+	//head->promoted = ;
+
+
+	head->next = (struct Move*) malloc(sizeof (struct Move));
+	head = head->next;
 }
