@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
 					//make clicked field selected only if it has a piece
 					if (clicked->pieceOnSquare != NULL) {
 						selected = clicked;
-						calculateValidTargets(board, selected->pieceOnSquare);
+						calculateValidTargets(board, selected->pieceOnSquare,true,false);
 					}
 					//do nothing if clicked on empty field
 				}

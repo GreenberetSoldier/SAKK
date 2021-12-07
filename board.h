@@ -48,16 +48,18 @@ typedef struct Color {
 struct Square {
 	Piece* pieceOnSquare;
 	bool target;
+	bool targetOfWhite;
+	bool targetOfBlack;
 };
 
 
 //order: [file][rank]
 typedef struct Square board_t[filenum][ranknum];
 
+void calculateValidTargets(board_t board, Piece* piece, bool selected, bool colorSpecific);
+
 void detargetAll(board_t board);
 void performMove(board_t board, struct Square* from, unsigned char toFile, unsigned char toRank);
-
-void calculateValidTargets(board_t board, Piece* piece);
 
 bool isWhite(Piece* piece);
 bool isBlack(Piece* piece);
