@@ -10,10 +10,6 @@
 
 //void TestMethod(Square*** board);
 
-//GLOBAL BOARD ARRAY
-board_t board;
-
-
 
 int main(int argc, char* argv[]) {
 
@@ -135,7 +131,7 @@ int main(int argc, char* argv[]) {
 					//make clicked field selected only if it has a piece
 					if (clicked->pieceOnSquare != NULL) {
 						selected = clicked;
-						calculateValidTargets(board, selected->pieceOnSquare);
+						calculateTargets(selected->pieceOnSquare, false);
 					}
 					//do nothing if clicked on empty field
 				}

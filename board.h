@@ -48,18 +48,34 @@ typedef struct Color {
 struct Square {
 	Piece* pieceOnSquare;
 	bool target;
-	bool targetOfBlack;
 	bool targetOfWhite;
+	bool targetOfBlack;
 };
-
 
 //order: [file][rank]
 typedef struct Square board_t[filenum][ranknum];
 
-void detargetAll(board_t board);
-void performMove(board_t board, struct Square* from, unsigned char toFile, unsigned char toRank);
+// the contents of struct move represent what happened in it
+struct Move {
+	struct Move* next;          // NULL only if this is the last move
+	struct Move* prev;          // NULL only if this is the first move
+	Piece* p;			// piece moved								(compulsory) 
+	uint8_t fdelta;		// delta file								(compulsory) 
+	uint8_t rdelta;		// delta row								(compulsory) 
+	Piece* taken;		// piece taken (or vanished by promotion)	(optional) 
+	Piece* promoted;	// piece appeared by promotion				(optional) 
+};
 
-void calculateValidTargets(board_t board, Piece* piece);
+//GLOBAL VARIABLES
+board_t board;
+struct Move* head, tail, current;
+ 
+// FUNCTION DECLARATIONS 
+void detargetAll(); 
+void performMove(struct Square* from, struct Square* to, unsigned char toFile, unsigned char toRank); 
+ 
+void calculateTargets(Piece* piece, bool colorSpecific); 
+void calculateAllColorSpecificTargets();
 
 bool isWhite(Piece* piece);
 bool isBlack(Piece* piece);
