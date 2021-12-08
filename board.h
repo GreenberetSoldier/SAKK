@@ -56,15 +56,15 @@ struct Square {
 typedef struct Square board_t[filenum][ranknum];
 
 // the contents of struct move represent what happened in it
-struct Move {
+typedef struct Move {
 	struct Move* next;          // NULL only if this is the last move
 	struct Move* prev;          // NULL only if this is the first move
 	Piece* p;			// piece moved								(compulsory) 
 	uint8_t fdelta;		// delta file								(compulsory) 
-	uint8_t rdelta;		// delta row								(compulsory) 
+	uint8_t rdelta;		// delta rank								(compulsory) 
 	Piece* taken;		// piece taken (or vanished by promotion)	(optional) 
 	Piece* promoted;	// piece appeared by promotion				(optional) 
-};
+} Move ;
 
 //GLOBAL VARIABLES
 board_t board;
