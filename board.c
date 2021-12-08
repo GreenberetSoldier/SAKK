@@ -8,6 +8,7 @@
 
 const char maxBlack = BPawnH;
 const char minWhite = WPawnA;
+extern board_t board;
 
 void setSquareTarget(struct Square* sq, bool white, bool colorSpecific) {
 	if (colorSpecific) {
@@ -270,14 +271,14 @@ void calculateTargets(Piece* piece, bool colorSpecific) {
 					&& (r >= minRank)){
 					//check if squares are empty, have enemy or are attacked
 					if (board[f][r].targetOfWhite == false && (board[f][r].pieceOnSquare == NULL || colorSpecific ^ isEnemy(piece, board[f][r].pieceOnSquare))) {
-						setSquareTarget(&board[f][r], true, colorSpecific);
+						setSquareTarget(&board[f][r], false, colorSpecific);
 					}
 				}
 			}
 
 			/*
 			//long castle 
-			//both pieces havent moved yet 
+			//both pieces havent moved yet
 			if (piece->movedYet == false && board[piece->file - 4][piece->rank].pieceOnSquare->movedYet == false) {
 				
 				//get all target squares 
@@ -314,7 +315,7 @@ void calculateAllColorSpecificTargets() {
 		for (int8_t f = minFile; f <= maxFile; ++f) {
 			board[f][r].targetOfBlack = false;
 			board[f][r].targetOfWhite = false;
-	}
+		}
 	
 	// recalculate them
 	for (int8_t r = minRank; r <= maxRank; ++r)
@@ -381,15 +382,30 @@ void performMove(struct Square* from, struct Square* to, unsigned char toFile, u
 }
 
 
-newMove() {
+Move* newMoveToEnd(Move* head, Piece* pieceMoved, uint8_t fdelta ,uint8_t rdelta,Piece* taken,Piece* promoted) {
+	
+	Move* newMove = (Move*)malloc(sizeof(Move));
+	
+	newMove->p = pieceMoved;
+	newMove->fdelta = fdelta;
+	newMove->rdelta = rdelta;
 
-	//head->p = ;
-	//head->fdelta = ;
-	//head->rdelta = ;
-	//head->taken = ;
-	//head->promoted = ;
+	if (taken != NULL) {
+		newMove->taken = taken;
+	}
+	if (promoted != NULL) {
+		newMove->promoted = promoted;
+	}
 
+	newMove->next = NULL;
 
-	head->next = (struct Move*) malloc(sizeof (struct Move));
-	head = head->next;
+	if (head == NULL) {
+		return newMove;
+	}
+	else {
+		Move* p = head;
+		while (p->next != NULL) p = p->next;
+		p->next = newMove;
+		return head;
+	}
 }
