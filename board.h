@@ -57,8 +57,8 @@ typedef struct Square board_t[filenum][ranknum];
 
 // the contents of struct move represent what happened in it
 typedef struct Move {
-	struct Move* next;          // NULL only if this is the last move
-	struct Move* prev;          // NULL only if this is the first move
+	struct Move* next;          // NULL only if this is the last move (head)
+	struct Move* prev;          // NULL only if this is the first move (tail)
 	Piece* p;			// piece moved								(compulsory) 
 	uint8_t fdelta;		// delta file								(compulsory) 
 	uint8_t rdelta;		// delta rank								(compulsory) 
@@ -68,7 +68,9 @@ typedef struct Move {
 
 //GLOBAL VARIABLES
 board_t board;
-struct Move* head, tail, current;
+Move* head;			// the latest move
+Move* tail;			// the first move (lehet hogy nem is fog kelleni)
+Move* current;		// pointer for walking on the list of moves
  
 // FUNCTION DECLARATIONS 
 void detargetAll(); 

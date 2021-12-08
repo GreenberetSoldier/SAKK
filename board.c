@@ -359,16 +359,59 @@ bool isBlack(Piece* piece) {
 	return piece->type <= maxBlack;
 }
 
+bool isPawn(Piece* piece) {
+	if (piece == NULL)
+		return false;
+
+	return (piece->type > BPawnA && piece->type < WPawnH);
+}
+
+int8_t addMove(Piece* pieceMoved, int8_t fdelta, int8_t rdelta, Piece* taken, Piece* promoted) {
+
+	if (current != head)				// new move possible only if current == head!
+		return -1;
+
+	Move* new = (Move*)malloc(sizeof(Move));
+	if (!new)
+		return -1;   // memory allocation error
+	*new = (Move){ NULL, NULL, NULL, 0, 0, NULL, NULL };
+
+	if (!head)							// if this is the first move in the match
+		tail = current = head = new;
+	else {								// if there have been moves already
+		head = new;
+		head->prev = current;
+		current->next = head;
+		current = head;
+	}
+
+	head->p = pieceMoved;
+	head->fdelta = fdelta;
+	head->rdelta = rdelta;
+	head->taken = taken;
+	head->promoted = promoted;
+
+	return 0;
+}
+
 void performMove(struct Square* from, struct Square* to, unsigned char toFile, unsigned char toRank) {
 	if (from == NULL || to == NULL)
 		exit(-1);
 	
-	if (to->pieceOnSquare != NULL)
-		to->pieceOnSquare->taken = true;
+	Piece* taken = NULL;
+	Piece* promoted = NULL;
+	int8_t fdelta = toFile - from->pieceOnSquare->file;
+	int8_t rdelta = toRank - from->pieceOnSquare->rank;
 
-	// a jelenlegi adatmodell�nkben egy mez�b�l nem tudhatjuk annak koordin�t�it!...
-	// (ez eredetileg benne volt, �s �n vettem ki.. - G�bor)
-	// ez�rt a l�p�shez sz�ks�g van a c�l koordin�t�ira is k�l�n, a c�l mez� �nmag�ban nem el�g
+	// Take
+	if (to->pieceOnSquare != NULL) {
+		to->pieceOnSquare->taken = true;
+		taken = to->pieceOnSquare;
+	}
+
+	//TODO: evaluate conditions for promotion and set value of promoted
+	//if (isPawn(from->pieceOnSquare))...
+
 	from->pieceOnSquare->file = toFile;
 	from->pieceOnSquare->rank = toRank;
 	to->pieceOnSquare = from->pieceOnSquare;
@@ -378,34 +421,8 @@ void performMove(struct Square* from, struct Square* to, unsigned char toFile, u
 
 	calculateAllColorSpecificTargets();
 
-	//newMove();
-}
+	if (0 != addMove(to->pieceOnSquare, fdelta, rdelta, taken, promoted))
+		;	// error handling
 
 
-Move* newMoveToEnd(Move* head, Piece* pieceMoved, uint8_t fdelta ,uint8_t rdelta,Piece* taken,Piece* promoted) {
-	
-	Move* newMove = (Move*)malloc(sizeof(Move));
-	
-	newMove->p = pieceMoved;
-	newMove->fdelta = fdelta;
-	newMove->rdelta = rdelta;
-
-	if (taken != NULL) {
-		newMove->taken = taken;
-	}
-	if (promoted != NULL) {
-		newMove->promoted = promoted;
-	}
-
-	newMove->next = NULL;
-
-	if (head == NULL) {
-		return newMove;
-	}
-	else {
-		Move* p = head;
-		while (p->next != NULL) p = p->next;
-		p->next = newMove;
-		return head;
-	}
 }
