@@ -6,10 +6,6 @@
 #include <math.h>
 #include "board.h"
 
-const char maxBlack = BPawnH;
-const char minWhite = WPawnA;
-extern board_t board;
-
 void setSquareTarget(struct Square* sq, bool white, bool colorSpecific) {
 	if (colorSpecific) {
 		if (white)

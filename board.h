@@ -3,16 +3,13 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-
 #include <stdbool.h>
-#include <SDL.h>
 
 #define windowWidht  720
 #define windowHeight 720
 #define squareSize   90
 #define pieceWidht   285
 #define pieceHeight  340
-
 
 #define filenum 8
 #define ranknum 8
@@ -29,9 +26,6 @@ enum PieceType {
 	WPawnA,   WPawnB,   WPawnC, WPawnD, WPawnE,   WPawnF,   WPawnG, WPawnH,
 	WRookA, WKnightA, WBishopA, WQueen,  WKing, WBishopB, WKnightB, WRookB
 };
-
-extern const char maxBlack;
-extern const char minWhite;
 
 typedef struct Piece {
 	enum PieceType type;
@@ -66,12 +60,16 @@ typedef struct Move {
 	Piece* promoted;			// piece appeared by promotion				(optional) 
 } Move ;
 
+
 //GLOBAL VARIABLES
-board_t board;
-Move* head = NULL;		// the latest move
-Move* tail = NULL;		// the first move (lehet hogy nem is fog kelleni)
-Move* current = NULL;	// pointer for walking on the list of moves
- 
+extern board_t board;
+extern Move* head;		// the latest move
+extern Move* tail;		// the first move (lehet hogy nem is fog kelleni)
+extern Move* current;	// pointer for walking on the list of moves
+extern const enum PieceType maxBlack;
+extern const enum PieceType minWhite;
+
+
 // FUNCTION DECLARATIONS 
 void detargetAll(); 
 void performMove(struct Square* from, struct Square* to, unsigned char toFile, unsigned char toRank); 

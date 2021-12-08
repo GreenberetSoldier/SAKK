@@ -8,8 +8,13 @@
 #include "board.h"
 #include "textures.h"
 
-//void TestMethod(Square*** board);
-
+//GLOBAL VARIABLES
+board_t board;
+Move* head = NULL;		// the latest move
+Move* tail = NULL;		// the first move (lehet hogy nem is fog kelleni)
+Move* current = NULL;	// pointer for walking on the list of moves
+const enum PieceType maxBlack = BPawnH;
+const enum PieceType minWhite = WPawnA;
 
 int main(int argc, char* argv[]) {
 
