@@ -385,10 +385,10 @@ int8_t addMove(Piece* pieceMoved, int8_t fdelta, int8_t rdelta, Piece* taken, Pi
 		current = head;
 	}
 
-	head->p = pieceMoved;
+	head->movedPiece = pieceMoved;
 	head->fdelta = fdelta;
 	head->rdelta = rdelta;
-	head->taken = taken;
+	head->takenPiece = taken;
 	head->promoted = promoted;
 
 	return 0;
@@ -423,6 +423,38 @@ void performMove(struct Square* from, struct Square* to, unsigned char toFile, u
 
 	if (0 != addMove(to->pieceOnSquare, fdelta, rdelta, taken, promoted))
 		;	// error handling
+}
 
+
+void goBack() {
+
+	if (current == tail)
+		return;
+
+	if (current->takenPiece) {
+		board[current->movedPiece->file][current->movedPiece->rank].pieceOnSquare = current->takenPiece;
+		current->takenPiece->taken = false;
+	}
+	else
+		board[current->movedPiece->file][current->movedPiece->rank].pieceOnSquare = NULL;   //make "source" sqare hold nothing
+
+	// TODO: undo promotion if any
+
+	uint8_t gobackf = current->movedPiece->file - current->fdelta;
+	uint8_t gobackr = current->movedPiece->rank - current->rdelta;
+
+	board[gobackf][gobackr].pieceOnSquare = current->movedPiece;				// make "destination" square hold the piece
+
+	current->movedPiece->file = gobackf;										// set piece's coordinates
+	current->movedPiece->rank = gobackr;
+
+	current = current->prev;
+}
+
+
+void goForward() {
+	
+	if (current == head)
+		return;
 
 }

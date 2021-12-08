@@ -35,8 +35,8 @@ extern const char minWhite;
 
 typedef struct Piece {
 	enum PieceType type;
-	unsigned char file;
-	unsigned char rank;
+	uint8_t file;
+	uint8_t rank;
 	bool movedYet;
 	bool taken;
 } Piece;
@@ -59,18 +59,18 @@ typedef struct Square board_t[filenum][ranknum];
 typedef struct Move {
 	struct Move* next;          // NULL only if this is the last move (head)
 	struct Move* prev;          // NULL only if this is the first move (tail)
-	Piece* p;			// piece moved								(compulsory) 
-	uint8_t fdelta;		// delta file								(compulsory) 
-	uint8_t rdelta;		// delta rank								(compulsory) 
-	Piece* taken;		// piece taken (or vanished by promotion)	(optional) 
-	Piece* promoted;	// piece appeared by promotion				(optional) 
+	Piece* movedPiece;			// piece moved								(compulsory) 
+	uint8_t fdelta;				// delta file								(compulsory) 
+	uint8_t rdelta;				// delta rank								(compulsory) 
+	Piece* takenPiece;			// piece taken (or vanished by promotion)	(optional) 
+	Piece* promoted;			// piece appeared by promotion				(optional) 
 } Move ;
 
 //GLOBAL VARIABLES
 board_t board;
-Move* head;			// the latest move
-Move* tail;			// the first move (lehet hogy nem is fog kelleni)
-Move* current;		// pointer for walking on the list of moves
+Move* head = NULL;		// the latest move
+Move* tail = NULL;		// the first move (lehet hogy nem is fog kelleni)
+Move* current = NULL;	// pointer for walking on the list of moves
  
 // FUNCTION DECLARATIONS 
 void detargetAll(); 
